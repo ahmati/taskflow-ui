@@ -186,9 +186,7 @@ const RegisterPage = () => {
             <h2 className="text-4xl font-bold text-primary-foreground mb-6">
               Start organizing your work today
             </h2>
-            <p className="text-xl text-primary-foreground/80 max-w-md">
-              Join thousands of teams who trust TaskFlow to manage their projects and boost productivity.
-            </p>
+
             
             {/* Features list */}
             <div className="mt-12 space-y-4">

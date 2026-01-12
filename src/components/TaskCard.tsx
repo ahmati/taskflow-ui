@@ -64,13 +64,24 @@ const TaskCard = ({ task, isDragging, variant = 'card', onClick }: TaskCardProps
     dispatch(updateTask({ id: task.id, updates: { status } } as any));
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     dispatch(deleteTask(task.id) as any);
+  };
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (e.defaultPrevented) return;
+    const target = e.target as HTMLElement | null;
+    if (target) {
+      const interactive = target.closest('button, a, input, textarea, select, [role="menuitem"], [data-no-open]');
+      if (interactive) return;
+    }
+    onClick?.();
   };
 
   if (variant === 'list') {
     return (
-      <div onClick={onClick} className="p-4 rounded-lg bg-card border border-border hover:shadow-md transition-all flex items-center gap-4">
+      <div onClick={handleCardClick} className="p-4 rounded-lg bg-card border border-border hover:shadow-md transition-all flex items-center gap-4">
         <GripVertical className="w-4 h-4 text-muted-foreground cursor-grab" />
         
         <div className={cn('inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-medium', typeConfig[task.type].className)}>
@@ -100,7 +111,7 @@ const TaskCard = ({ task, isDragging, variant = 'card', onClick }: TaskCardProps
           </SelectContent>
         </Select>
 
-        <Button variant="ghost" size="icon" onClick={handleDelete} className="text-muted-foreground hover:text-destructive">
+        <Button variant="ghost" size="icon" onClick={(e) => handleDelete(e)} className="text-muted-foreground hover:text-destructive">
           <Trash2 className="w-4 h-4" />
         </Button>
       </div>
@@ -113,7 +124,7 @@ const TaskCard = ({ task, isDragging, variant = 'card', onClick }: TaskCardProps
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      onClick={onClick}
+      onClick={handleCardClick}
       className={cn(
         'p-4 rounded-lg bg-card border border-border transition-all cursor-grab active:cursor-grabbing',
         isDragging ? 'shadow-lg ring-2 ring-primary/20' : 'hover:shadow-md'
@@ -142,7 +153,7 @@ const TaskCard = ({ task, isDragging, variant = 'card', onClick }: TaskCardProps
               Move to Done
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete} className="text-destructive focus:text-destructive">
+            <DropdownMenuItem onClick={(e: any) => handleDelete(e)} className="text-destructive focus:text-destructive">
               <Trash2 className="w-4 h-4 mr-2" />
               Delete
             </DropdownMenuItem>
