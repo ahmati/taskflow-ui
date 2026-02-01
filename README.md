@@ -1,4 +1,4 @@
-Task flow ui . Access app via : https://task-flow-h2tlwyime-ramazans-projects-aa4c7cff.vercel.app/
+Task flow ui . Access app via : https://task-flow-indol-nu.vercel.app/
 
 To test the app,  signup with any email (no verification required) 
 Features:
